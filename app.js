@@ -64,6 +64,7 @@ app.get("/", function(req, res){
 
 app.get("/trends.json", function(req, res){
 	redisClient.hgetall("words", function(e, words){
+		res.setHeader('Content-Type', 'application/json');
 		res.json('index', words);
 	});
 });
