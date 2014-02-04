@@ -64,9 +64,59 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 
     <script type="text/javascript">
-    
+    $(function(){
+
+        var r = 500,
+            format = d3.format(",d"),
+            fill = d3.scale.category20c();
+
+        var bubble = d3.layout.pack()
+            .sort(null)
+            .size([r, r])
+            .padding(1.5);
+
+        var vis = d3.select("#bubble-chart").append("svg")
+            .attr("width", "100%")
+            .attr("height", r)
+            .attr("class", "bubble");
+
+        d3.json("/trends.json", function(json){
+          var node = vis.selectAll("g.node")
+              .data(bubble.nodes(classes(json))
+              .filter(function(d) { return !d.children; }))
+            .enter().append("g")
+              .attr("class", "node")
+              .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+          node.append("title")
+              .text(function(d) { return d.word + ": " + format(d.value); });
+
+          node.append("circle")
+              .attr("r", function(d) { return d.r; })
+              .style("fill", function(d) { return fill(d.word); });
+
+          node.append("text")
+              .attr("text-anchor", "middle")
+              .attr("dy", ".3em")
+              .text(function(d) { return d.word + ": " + format(d.value); });
+        });
+
+        // Returns a flattened hierarchy containing all leaf nodes under the root.
+        function classes(root) {
+          var classes = [];
+
+          for(var prop in root) {
+              if(root.hasOwnProperty(prop))
+                  classes.push({ word: prop.toString(), value: root[prop] });
+          }
+
+          return {children: classes};
+        }
+
+    });
     </script>
 
   </head>
@@ -82,6 +132,9 @@
           <h1>Tube strike '14 reactions...</h1>
         </div>
         <p class="lead">The most tasteful reactions from around the internet (i.e. twitter!)</p>
+
+        <div id="bubble-chart"></div>
+
         <p>Use <a href="../sticky-footer-navbar">the sticky footer with a fixed navbar</a> if need be, too.</p>
       </div>
     </div>
