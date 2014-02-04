@@ -56,6 +56,12 @@ app.get("/", function(req, res){
 	res.render('index');
 });
 
+app.get("/trends.json", function(req, res){
+	redisClient.hgetall("words", function(e, words){
+		res.json('index', words);
+	});
+});
+
 app.listen(process.env.PORT || 3000);
 
 
