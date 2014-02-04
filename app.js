@@ -39,17 +39,8 @@ function startPoll(){
 
 	stream.on('tweet', function(tweet) {
 		sentiment.analyse(tweet.text).forEach(function(word){
-			redisClient.hincrby("words", word, 1, function(){
-				notifySentiments();
-			});
+			redisClient.hincrby("words", word, 1);
 		});
-	});
-}
-
-function notifySentiments(){
-	console.log("Sentiments updated");
-	redisClient.hgetall("words", function(e, words){
-		console.log(words);
 	});
 }
 
