@@ -5,7 +5,13 @@ var Twit = require("twit")
   , sentiment = require("./sentiment_analyser")
   , express = require("express");
 
-var config = JSON.parse(fs.readFileSync(__dirname + '/settings.json', 'utf8'));
+
+var configPath = __dirname + '/settings.json';
+var config = {};
+
+if (fs.existsSync(configPath)){
+	config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+}
 
 function configValue(key){
 	return process.env[key] || config[key];
