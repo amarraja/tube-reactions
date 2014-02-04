@@ -1,7 +1,8 @@
 var Twit = require("twit")
   , redis = require("redis")
   , fs = require("fs")
-  , url = require("url");
+  , url = require("url")
+  , sentiment = require("./sentiment_analyser");
 
 var config = JSON.parse(fs.readFileSync(__dirname + '/settings.json', 'utf8'));
 
@@ -30,7 +31,20 @@ function startPoll(){
 	var stream = T.stream("statuses/filter", { track: "strike" });
 
 	stream.on('tweet', function(tweet) {
-		console.log(tweet.text);
+		sentiment.analyse(tweet.text).forEach(function(word){
+			redisClient.hincrby("words", word, 1, function(){
+				notifySentiments();
+			});
+		});
 	});
 }
+
+function notifySentiments(){
+	console.log("Sentiments updated");
+	redisClient.hgetall("words", function(e, words){
+		console.log(words);
+	});
+}
+
+
 
