@@ -2,7 +2,8 @@ var Twit = require("twit")
   , redis = require("redis")
   , fs = require("fs")
   , url = require("url")
-  , sentiment = require("./sentiment_analyser");
+  , sentiment = require("./sentiment_analyser")
+  , express = require("express");
 
 var config = JSON.parse(fs.readFileSync(__dirname + '/settings.json', 'utf8'));
 
@@ -46,5 +47,10 @@ function notifySentiments(){
 	});
 }
 
+var app = express();
+
+app.use(express.static(__dirname + '/public'));
+
+app.listen(process.env.PORT || 3000);
 
 

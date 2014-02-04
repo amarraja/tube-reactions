@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "twit": "~1.1.12",
-    "redis": "~0.10.0"
+    "redis": "~0.10.0",
+    "express": "~3.4.8"
   }
 }
