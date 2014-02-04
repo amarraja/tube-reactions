@@ -3,7 +3,8 @@ var Twit = require("twit")
   , fs = require("fs")
   , url = require("url")
   , sentiment = require("./sentiment_analyser")
-  , express = require("express");
+  , express = require("express")
+  , heroku = require("heroku-ping");
 
 
 var configPath = __dirname + '/settings.json';
@@ -60,5 +61,10 @@ app.get("/trends.json", function(req, res){
 });
 
 app.listen(process.env.PORT || 3000);
+
+heroku.ping({
+  apps: [{ name: 'tube-reactions' }]
+});
+
 
 
