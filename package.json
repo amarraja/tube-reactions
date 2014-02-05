@@ -13,6 +13,7 @@
     "redis": "~0.10.0",
     "express": "~3.4.8",
     "ejs": "~0.8.5",
-    "heroku-ping": "~0.1.0"
+    "heroku-ping": "~0.1.0",
+    "underscore": "~1.5.2"
   }
 }

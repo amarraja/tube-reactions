@@ -1,15 +1,11 @@
-var fs = require("fs");
+var fs = require("fs")
+  , _ = require("underscore");
 
-var words = fs.readFileSync(__dirname + '/words.txt', 'utf8').split("\n");
+var words = _.select(fs.readFileSync(__dirname + '/words.txt', 'utf8').split("\n"),function(word) { return word.length > 0; });
 
 function analyse(text) {
-	var matches = [];
-	words.forEach(function(word){
-		if (word.length > 0 && text.indexOf(word) != -1){
-			matches.push(word);
-		}
-	});
-	return matches;
+	var textParts = text.toLowerCase().split(/([a-z]+)/)
+	return _.intersection(words, textParts);
 }
 
 module.exports = {
