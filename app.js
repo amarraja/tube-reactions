@@ -31,7 +31,7 @@ var redisUrl = url.parse(configValue("REDIS_TO_GO_URL"));
 var redisClient = redis.createClient(redisUrl.port, redisUrl.hostname, {no_ready_check: true});
 redisClient.auth(redisUrl.auth.split(":")[1], function(){
 	console.log("Redis connected");
-	startPoll();
+	//startPoll();
 });
 
 
