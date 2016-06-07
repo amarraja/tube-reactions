@@ -1,5 +1,4 @@
-var Twit = require("twit")
-  , redis = require("redis")
+var Twit = require("twit") , redis = require("redis")
   , fs = require("fs")
   , url = require("url")
   , sentiment = require("./sentiment_analyser")
@@ -61,10 +60,6 @@ app.get("/trends.json", function(req, res){
 });
 
 app.listen(process.env.PORT || 3000);
-
-heroku.ping({
-  apps: [{ name: 'tube-reactions' }]
-});
 
 
 
